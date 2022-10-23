@@ -1,0 +1,4 @@
+This is new string
+aaaaa
+bbbbbb
+cccccc
