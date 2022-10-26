@@ -1,12 +1,14 @@
+from common import course_def
+
+
 def process_list(student_data: dict):
     records = list(student_data.values())
     records.sort(key=lambda a: a.get("name"))
 
     for record in records:
         print(record.get("name"))
-        print(f"Chinese score: {record.get('chinese')}")
-        print(f"English score: {record.get('chinese')}")
-        print(f"Math score: {record.get('chinese')}")
+        for course in course_def.COURSE_NAME_SET:
+            print(f"{course} score: {record.get(course)}")
         print(" ")
 
 
@@ -18,9 +20,9 @@ def process_add(student_data: dict):
 
     record = {
         "name": name,
-        "chinese": int(chinese_score),
-        "english": int(english_score),
-        "math": int(math_score)
+        "chinese": chinese_score,
+        "english": english_score,
+        "math": math_score
     }
 
     student_data[name] = record
@@ -28,7 +30,17 @@ def process_add(student_data: dict):
 
 
 def process_edit(student_data: dict):
-    pass
+    name = input("Please input name: ")
+    if name in student_data.keys():
+        course = input("Please input course name: ")
+        if course in course_def.COURSE_NAME_SET:
+            score = input("Please input score: ")
+            student_data[name][course] = score
+            print(f"Update score for '{name}' successfully")
+        else:
+            print(f"Course '{course}' is not supported")
+    else:
+        print(f"Student '{name}' does not exist")
 
 
 def process_delete(student_data: dict):
@@ -42,11 +54,22 @@ def process_delete(student_data: dict):
 
 
 def process_average(student_data: dict):
-    pass
+    student_count = len(student_data)
+    if student_count == 0:
+        print("No student scores")
+        return
 
+    total_results = {}
+    for course in course_def.COURSE_NAME_SET:
+        total_results[course] = 0
 
-def process_exit(student_data: dict):
-    pass
+    for record in student_data.values():
+        for course in course_def.COURSE_NAME_SET:
+            total_results[course] = total_results[course] + int(record.get(course))
+
+    for course in course_def.COURSE_NAME_SET:
+        average = total_results[course] / student_count
+        print(f"Average of {course} is: {average}")
 
 
 def process_command(cmd: str, student_data: dict):

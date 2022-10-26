@@ -1,5 +1,6 @@
 import csv
 import os.path
+from common import course_def
 
 file = "students.csv"
 
@@ -26,7 +27,8 @@ def save_data(data: dict):
 
     if len(data) > 0:
         rows = list(data.values())
-        csv_writer = csv.DictWriter(file_instance, rows[0].keys())
+        headers = course_def.COURSE_NAME_SET.union({"name"})
+        csv_writer = csv.DictWriter(file_instance, headers)
         csv_writer.writeheader()
         csv_writer.writerows(rows)
 
