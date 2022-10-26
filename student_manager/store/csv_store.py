@@ -1,9 +1,10 @@
 import csv
 import os.path
 
+file = "students.csv"
+
 
 def load_data() -> dict:
-    file = "students.csv"
 
     result = {}
 
@@ -21,4 +22,12 @@ def load_data() -> dict:
 
 
 def save_data(data: dict):
-    pass
+    file_instance = open(file, 'w', encoding="UTF8")
+
+    if len(data) > 0:
+        rows = list(data.values())
+        csv_writer = csv.DictWriter(file_instance, rows[0].keys())
+        csv_writer.writeheader()
+        csv_writer.writerows(rows)
+
+    file_instance.close()
